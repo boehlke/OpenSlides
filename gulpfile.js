@@ -44,6 +44,14 @@ gulp.task('js-libs', function () {
         .pipe(gulp.dest(path.join(output_directory, 'js')));
 });
 
+// copies the fake pdf worker library which is loaded asynchronously by pdfjs if webworkers somehow fail
+// TODO: find out if this can be removed
+gulp.task('js-libs-fakepdfworkerlib', function() {
+   return gulp.src(['./bower_components/pdfjs-dist/build/pdf.worker.js'])
+        .pipe(concat('openslides-libs.worker.js'))
+        .pipe(gulp.dest(path.join(output_directory, 'js')));
+});
+
 // Catches all CSS files from all bower components and concats them to one file
 // css/openslides-libs.css. In production mode the file is uglified.
 gulp.task('css-libs', function () {
@@ -80,7 +88,7 @@ gulp.task('translations', function () {
 });
 
 // Gulp default task. Runs all other tasks before.
-gulp.task('default', ['js-libs', 'css-libs', 'fonts-libs', 'ckeditor', 'translations'], function () {});
+gulp.task('default', ['js-libs', 'js-libs-fakepdfworkerlib', 'css-libs', 'fonts-libs', 'ckeditor', 'translations'], function () {});
 
 
 /**
